@@ -25,7 +25,6 @@ const Home = () => {
   const dispatch = useDispatch();
   const { stores } = useSelector((state) => state.stores);
   const [isFetch, setIsFetch] = React.useState(false);
-  const [products, setProducts] = React.useState([]);
   const router = useRouter();
 
   const {
@@ -50,15 +49,15 @@ const Home = () => {
     Promise.all([dispatch(initStorate(jsonRes)), setIsFetch(false)]);
   };
 
-  const storeIt = () => {
+  const storeIt = React.useCallback(() => {
     if (stores.length > 0) return;
     return sFetch();
-  };
+  }, [stores]);
 
   React.useEffect(() => {
     storeIt();
     return () => console.log("Moved");
-  }, [dispatch]);
+  }, []);
 
   return (
     <div>

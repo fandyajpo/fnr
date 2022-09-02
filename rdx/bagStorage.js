@@ -1,7 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-// if (itemId >= 0 && (state.bag[itemId].color.name === payload.color.name >= 0 || state.bag[itemId].size === payload.size >= 0))
-
 const initState = {
   bag: [],
   orderQuantity: 0,
