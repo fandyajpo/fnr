@@ -57,7 +57,7 @@ const Home = () => {
 
   React.useEffect(() => {
     storeIt();
-    return () => console.log("waw");
+    return () => console.log("Moved");
   }, [dispatch]);
 
   return (

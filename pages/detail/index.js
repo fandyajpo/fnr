@@ -51,9 +51,9 @@ const Detail = ({}) => {
   const colors = stores[id]?.colors;
   const video = stores[id]?.video;
 
-  const storeCheck = () => {
+  const storeCheck = React.useCallback(() => {
     if (stores[id] === undefined) return router.replace("/");
-  };
+  }, [stores[id]]);
 
   React.useEffect(() => {
     storeCheck();

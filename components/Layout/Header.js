@@ -1,10 +1,6 @@
 import React from "react";
 import FreeShipping from "components/FreeShipping";
 const Header = () => {
-  React.useEffect(() => {
-    console.log("header Render");
-  });
-
   return (
     <div className="bg-grays backdrop-blur-sm w-full h-10 flex flex-row items-center justify-between px-4 md:px-8 lg:px-44">
       <div className="w-1/4 h-auto ">

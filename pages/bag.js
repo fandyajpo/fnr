@@ -14,11 +14,6 @@ const Bag = () => {
     dispatch(orderPrice());
   }, [bag, orderTotal, orderQuantity, dispatch]);
 
-  React.useEffect(() => {
-    console.log("orderTotal", orderTotal);
-    console.log("quantity", orderQuantity);
-  });
-
   return (
     <div>
       <Category>
