@@ -1,7 +1,7 @@
 import React from "react";
 import { CloseSvg } from "lib/listSvg";
 import { useDispatch, useSelector } from "react-redux";
-import { removeOrder } from "lib/redux";
+import { removeOrder, addQuantity, decreaseQuantity } from "rdx/bagStorage";
 import { ProductImage } from "lib/source";
 import Image from "next/future/image";
 
@@ -16,17 +16,31 @@ const InOrder = () => {
     [dispatch]
   );
 
+  const addQuant = React.useCallback(
+    (id) => {
+      dispatch(addQuantity({ id }));
+    },
+    [dispatch]
+  );
+
+  const decreaseQuant = React.useCallback(
+    (id) => {
+      dispatch(decreaseQuantity({ id }));
+    },
+    [dispatch]
+  );
+
   const MapBag = () => {
-    if (bag.length < 1)
+    if (bag?.length < 1)
       return (
         <div className="flex justify-center items-center w-full h-full border-b-2">
           No order item is here
         </div>
       );
-    return bag.map((ord) => {
+    return bag.map((ord, i) => {
       return (
         <div
-          key={ord.id}
+          key={i}
           className="font-bold flex flex-col justify-start md:flex-row  items-center md:justify-between w-full border rounded-md md:border-none p-2 md:p-0 gap-y-2 md:gap-y-0"
         >
           <div className="flex flex-row-reverse md:flex-row justify-between md:items-center gap-x-2 md:gap-x-24 w-full md:w-full">
@@ -48,7 +62,7 @@ const InOrder = () => {
               <div className="w-full">
                 <p className="text-sm">{ord?.name}</p>
                 <div className="flex flex-row items-center gap-x-2 text-sm w-full">
-                  <p>Size: {ord?.size}</p>
+                  <p>Size: {ord?.size?.size}</p>
                   <div className="flex flex-row items-center gap-x-2 text-sm">
                     <p>Color :</p>
                     <div
@@ -69,7 +83,21 @@ const InOrder = () => {
             </div>
             <div>
               <p className="md:hidden text-xs">QUANTITY</p>
-              <p>{ord.quantity}</p>
+              <div className="flex flex-row items-center gap-x-2 md:gap-x-4">
+                <button
+                  onClick={() => decreaseQuant(ord?.id)}
+                  className="bg-black text-white w-5 h-5 rounded-full flex justify-center items-center"
+                >
+                  <p>-</p>
+                </button>
+                <p>{ord.quantity}</p>
+                <button
+                  onClick={() => addQuant(ord?.id)}
+                  className="bg-black text-white w-5 h-5 rounded-full flex justify-center items-center"
+                >
+                  <p>+</p>
+                </button>
+              </div>
             </div>
             <div>
               <p className="md:hidden text-xs">TOTAL</p>
@@ -80,6 +108,11 @@ const InOrder = () => {
       );
     });
   };
+
+  React.useEffect(() => {
+    MapBag();
+  }, [bag, dispatch, MapBag()]);
+
   return (
     <>
       <div className="justify-around w-full mb-12 md:flex hidden">

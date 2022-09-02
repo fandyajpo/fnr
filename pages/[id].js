@@ -3,6 +3,9 @@ import Category from "components/Category";
 import Layout from "components/Layout/Layout";
 import Product from "components/Product/Product";
 import { useRouter } from "next/router";
+import { useDispatch, useSelector } from "react-redux";
+import { initStorate } from "rdx/productStorage";
+import { Loading } from "lib/listSvg";
 
 // export async function getServerSideProps({ res, req }) {
 //   const Fetcher = await fetch(
@@ -18,18 +21,11 @@ import { useRouter } from "next/router";
 //   };
 // }
 
-const Loading = React.memo(() => {
-  return (
-    <div className="w-full h-full flex justify-center items-center">
-      <div className="w-44 h-44 rounded-full border-l-2 animate-spin border-black"></div>
-    </div>
-  );
-});
-Loading.displayName = "Loading";
-
 const Home = () => {
+  const dispatch = useDispatch();
+  const { stores } = useSelector((state) => state.stores);
   const [isFetch, setIsFetch] = React.useState(false);
-  const [product, setProducts] = React.useState([]);
+  const [products, setProducts] = React.useState([]);
   const router = useRouter();
 
   const {
@@ -50,19 +46,24 @@ const Home = () => {
       "https://my-json-server.typicode.com/megasuartika/fe-assignment/db"
     );
     const result = await Fetcher.json();
-    const product = result.shoes.map((pd, id) => Object.assign(pd, { id }));
-    setProducts(product);
-    setIsFetch(false);
+    const jsonRes = result.shoes.map((pd, id) => Object.assign(pd, { id: id }));
+    Promise.all([dispatch(initStorate(jsonRes)), setIsFetch(false)]);
+  };
+
+  const storeIt = () => {
+    if (stores.length > 0) return;
+    return sFetch();
   };
 
   React.useEffect(() => {
-    sFetch();
-  }, []);
+    storeIt();
+    return () => console.log("waw");
+  }, [dispatch]);
 
   return (
     <div>
       <Category>{Cat()}</Category>
-      {isFetch ? <Loading /> : <Product product={product} />}
+      {isFetch ? <Loading /> : <Product />}
     </div>
   );
 };

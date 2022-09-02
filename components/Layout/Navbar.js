@@ -1,10 +1,12 @@
 import React from "react";
 import { NikeSvg, Bag, Profile, NavMenu } from "lib/listSvg";
 import { useRouter } from "next/router";
-import { orderPrice } from "lib/redux";
+import { orderPrice } from "rdx/bagStorage";
 import { useSelector, useDispatch } from "react-redux";
 
 const Navbar = () => {
+  const navRef = React.useRef();
+
   const { bag, orderQuantity } = useSelector((state) => state.bag);
 
   const dispatch = useDispatch();
@@ -45,15 +47,17 @@ const Navbar = () => {
           onClick={handleNavbar}
         />
         <div className="w-16 h-auto">
-          <button onClick={() => goTo("/all")}>
+          <button
+            onClick={() => {
+              goTo("/");
+            }}
+          >
             <NikeSvg />
           </button>
         </div>
         <div
           className={`flex flex-col z-10 md:flex-row md:items-center md:w-2/4 justify-around font-bold absolute md:relative md:h-auto bg-grays md:bg-transparent  left-0 duration-200 md:overflow-hidden md:p-0 top-0  w-full p-4  ${
-            open
-              ? "h-44 md:scale-100 opacity-100"
-              : "h-0 scale-0 opacity-0 md:scale-100 md:opacity-100"
+            open ? "h-44 " : "h-0 scale-0 opacity-0 md:scale-100 md:opacity-100"
           }`}
         >
           <div>
@@ -120,7 +124,7 @@ const Navbar = () => {
         <div className="w-28 md:w-16 h-auto flex flex-row items-center justify-between">
           <button onClick={() => goTo("/bag")} className="relative">
             <div
-              className={`w-4 text-xs h-4 text-white rounded-full absolute top-0 right-0 duration-200 flex justify-center items-center ${
+              className={`w-4 text-xs h-4 text-white rounded-full absolute -top-2 -right-2 duration-200 flex justify-center items-center ${
                 orderQuantity > 0 ? "bg-red-500" : "bg-transparent opacity-0"
               }`}
             >
@@ -128,7 +132,7 @@ const Navbar = () => {
             </div>
             <Bag />
           </button>
-          <button>
+          <button onClick={() => alert("Profile is underdev")}>
             <Profile />
           </button>
           <button onClick={handleNavbar} className={"md:hidden"}>

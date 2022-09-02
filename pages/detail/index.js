@@ -15,62 +15,55 @@ import ProductVideo from "components/Modal/ProductVideo";
 
 import AddBag from "components/Product/AddBag";
 
-export async function getServerSideProps(context) {
-  const page = context.query.id;
+import { useSelector } from "react-redux";
 
-  if (!page) {
-    return {
-      redirect: {
-        destination: "/",
-        permanent: false,
-      },
-    };
-  }
+// export async function getServerSideProps(context) {
+//   const page = context.query.id;
+//   if (!stores) {
+//     return {
+//       redirect: {
+//         destination: "/",
+//         permanent: false,
+//       },
+//     };
+//   }
+//   return {
+//     data: { data: page || null },
+//   };
+// }
 
-  try {
-    const Fetcher = await fetch(
-      "https://my-json-server.typicode.com/megasuartika/fe-assignment/db"
-    );
+const Detail = ({}) => {
+  const { stores } = useSelector((state) => state.stores);
 
-    const result = await Fetcher.json();
-    const data = result.shoes[page];
-    return {
-      props: {
-        data: data || null,
-      },
-    };
-  } catch (err) {
-    return {
-      props: {
-        product: {},
-      },
-    };
-  }
-}
-
-const Detail = ({ data }) => {
   const [play, setPlay] = React.useState(false);
+  const [color, setColor] = React.useState();
+  const [size, setSize] = React.useState();
 
   const router = useRouter();
   const { query } = router;
   const { id } = query;
 
-  const name = data?.name;
-  const category = data?.category;
-  const description = data?.description;
-  const price = data?.price;
-  const sizes = data?.sizes;
-  const colors = data?.colors;
-  const video = data?.video;
+  const name = stores[id]?.name;
+  const category = stores[id]?.category;
+  const description = stores[id]?.description;
+  const price = stores[id]?.price;
+  const sizes = stores[id]?.sizes;
+  const colors = stores[id]?.colors;
+  const video = stores[id]?.video;
 
-  const [color, setColor] = React.useState();
-  const [size, setSize] = React.useState();
+  const storeCheck = () => {
+    if (stores[id] === undefined) return router.replace("/");
+  };
+
+  React.useEffect(() => {
+    storeCheck();
+  }, [stores]);
 
   return (
     <>
       <ProductVideo setPlay={setPlay} play={play} video={video} />
       <div className="pt-12">
-        {!data ? (
+        {!stores[id] || null ? (
           <ProductNotFound />
         ) : (
           <div className="flex flex-col gap-y-4">

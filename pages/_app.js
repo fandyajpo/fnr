@@ -1,7 +1,7 @@
 import "../styles/globals.css";
 import { Provider } from "react-redux";
 import store from "lib/context";
-import { orderPrice } from "lib/redux";
+import { orderPrice } from "rdx/bagStorage";
 function MyApp({ Component, pageProps }) {
   store.dispatch(orderPrice());
   const Layout = Component.layout || (({ children }) => <>{children}</>);

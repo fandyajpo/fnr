@@ -2,9 +2,15 @@ import React from "react";
 import Image from "next/future/image";
 import { useRouter } from "next/router";
 import { ProductImage } from "lib/source";
+import { listItem } from "rdx/productStorage";
+import { Loading } from "lib/listSvg";
+import { useDispatch, useSelector } from "react-redux";
+const Product = () => {
+  const { stores } = useSelector((state) => state.stores);
 
-const Product = ({ product }) => {
-  const [item, setItem] = React.useState(product);
+  React.useEffect(() => {
+    console.log(stores[0]);
+  });
 
   const router = useRouter();
   const {
@@ -22,7 +28,7 @@ const Product = ({ product }) => {
   );
 
   const AllProduct = React.useMemo(() => {
-    return item.map((prod) => {
+    return stores.map((prod) => {
       return (
         <button onClick={() => goToDetail(prod.id)} key={prod.id}>
           <div className="bg-white w-auto h-auto flex flex-col gap-y-2">
@@ -50,7 +56,7 @@ const Product = ({ product }) => {
   }, [id]);
 
   const Men = React.useMemo(() => {
-    return item
+    return stores
       .filter((men) => men.category === "Men Shoes")
       .map((prod) => {
         return (
@@ -80,7 +86,7 @@ const Product = ({ product }) => {
   }, [id]);
 
   const Sport = React.useMemo(() => {
-    return item
+    return stores
       .filter((sprt) => sprt.category === "Basketball Shoes")
       .map((prod) => {
         return (
@@ -115,12 +121,14 @@ const Product = ({ product }) => {
     if (id === "men") return Men;
 
     if (id === "sport") return Sport;
-    return (
-      <div className="text-2xl font-bold w-full">
-        <p>product is not available for now . . . . . . . . . . .</p>
-        <p>. . . . . . . . </p>
-      </div>
-    );
+
+    if (id)
+      return (
+        <div className="text-2xl font-bold w-full">
+          <p>product is not available for now . . . . . . . . . . .</p>
+          <p>. . . . . . . . </p>
+        </div>
+      );
   }, [AllProduct, Men, Sport]);
 
   return (
@@ -130,4 +138,4 @@ const Product = ({ product }) => {
   );
 };
 
-export default Product;
+export default React.memo(Product);

@@ -4,7 +4,8 @@ import BagHead from "components/BagHead";
 import InOrder from "components/Bag/InOrder";
 import PayButton from "components/Bag/PayButton";
 import { useDispatch, useSelector } from "react-redux";
-import { orderPrice } from "lib/redux";
+import { orderPrice } from "rdx/bagStorage";
+import Category from "components/Category";
 const Bag = () => {
   const { bag, orderTotal, orderQuantity } = useSelector((state) => state.bag);
   const dispatch = useDispatch();
@@ -20,7 +21,9 @@ const Bag = () => {
 
   return (
     <div>
-      <BagHead />
+      <Category>
+        <BagHead />
+      </Category>
       <InOrder />
       {bag.length > 0 && <PayButton />}
     </div>
