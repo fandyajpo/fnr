@@ -8,10 +8,6 @@ const ProductSize = ({ sizes, size, setSize }) => {
     [size]
   );
 
-  React.useEffect(() => {
-    console.log("size", size);
-  }, [size]);
-
   return (
     <div className="flex flex-col gap-4">
       <p

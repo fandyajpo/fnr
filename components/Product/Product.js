@@ -2,15 +2,9 @@ import React from "react";
 import Image from "next/future/image";
 import { useRouter } from "next/router";
 import { ProductImage } from "lib/source";
-import { listItem } from "rdx/productStorage";
-import { Loading } from "lib/listSvg";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 const Product = () => {
   const { stores } = useSelector((state) => state.stores);
-
-  React.useEffect(() => {
-    console.log(stores[0]);
-  });
 
   const router = useRouter();
   const {

@@ -8,10 +8,6 @@ const ProductColor = ({ colors, color, setColor }) => {
     [color]
   );
 
-  React.useEffect(() => {
-    console.log("color", color);
-  });
-
   return (
     <div className="flex flex-col gap-4">
       <p
