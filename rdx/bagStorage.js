@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-
+// if (itemId >= 0 && (state.bag[itemId].color.name === payload.color.name >= 0 || state.bag[itemId].size === payload.size >= 0))
 const initState = {
   bag: [],
   orderQuantity: 0,
@@ -10,6 +10,11 @@ export const bag = createSlice({
   name: "bag",
   initialState: initState,
   reducers: {
+    mapCheck: (state, action) => {
+      state.bag.map((itm, idx) => {
+        return console.log("apakah ini sama? : ", idx === 2);
+      });
+    },
     addBag: (state, action) => {
       const itemId = state.bag.findIndex(
         (item) => item.id === action.payload.id
@@ -44,6 +49,22 @@ export const bag = createSlice({
       }
     },
     removeOrder: (state, action) => {
+      // const mapPrct = () => {
+      //   return state.bag.map((itm, idx) => {
+      //     return idx;
+      //   });
+      // };
+
+      // const itemIdChecker = state.bag.map((itm, idx) => {
+      //   return {
+      //     id: idx
+      //   }
+      // });
+
+      // if (itemIdChecker) {
+      //   state.bag = state.bag.filter((_) => state.id !== action.payload.id);
+      // }
+
       state.bag = state.bag.filter((order) => order.id !== action.payload.id);
     },
     orderPrice: (state, action) => {
@@ -74,6 +95,7 @@ export const {
   orderPrice,
   addQuantity,
   decreaseQuantity,
+  mapCheck,
 } = bag.actions;
 
 export default bag.reducer;

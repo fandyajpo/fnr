@@ -33,13 +33,9 @@ const Navbar = () => {
     [router]
   );
 
-  React.useEffect(() => {
-    console.log("Navbar Render");
-  });
-
   return (
     <>
-      <div className="bg-white backdrop-blur-sm w-full h-20 flex flex-row items-center justify-between px-4 md:px-8 lg:px-44 z-10">
+      <div className="bg-white backdrop-blur-sm w-full h-20 flex flex-row items-center justify-between px-4 md:px-8 lg:px-44 z-20">
         <div
           className={`bg-black/60 w-full h-screen inset-0 fixed ${
             open ? "" : "hidden"

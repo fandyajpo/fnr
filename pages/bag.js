@@ -6,7 +6,12 @@ import PayButton from "components/Bag/PayButton";
 import { useDispatch, useSelector } from "react-redux";
 import { orderPrice } from "rdx/bagStorage";
 import Category from "components/Category";
+import RemoveItemDialog from "components/Dialog/RemoveItem";
 const Bag = () => {
+  const [rmvId, setRmvId] = React.useState("");
+  const dialogRef = React.useRef();
+  const orderRef = React.useRef();
+
   const { bag, orderTotal, orderQuantity } = useSelector((state) => state.bag);
   const dispatch = useDispatch();
 
@@ -14,14 +19,24 @@ const Bag = () => {
     dispatch(orderPrice());
   }, [bag, orderTotal, orderQuantity, dispatch]);
 
+  const refOpenDialog = React.useCallback(() => {
+    dialogRef.current.openDialog();
+  }, []);
+
   return (
-    <div>
+    <>
+      <RemoveItemDialog ref={dialogRef} setRmvId={setRmvId} rmvId={rmvId} />
       <Category>
         <BagHead />
       </Category>
-      <InOrder />
+      <InOrder
+        ref={orderRef}
+        refOpenDialog={refOpenDialog}
+        setRmvId={setRmvId}
+        rmvId={rmvId}
+      />
       {bag.length > 0 && <PayButton />}
-    </div>
+    </>
   );
 };
 

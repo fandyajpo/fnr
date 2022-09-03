@@ -2,24 +2,26 @@ import React from "react";
 
 const ProductColor = ({ colors, color, setColor }) => {
   const sSelect = React.useCallback(
-    (h) => {
+    (h) => () => {
       setColor(h);
     },
     [color]
   );
 
+  React.useEffect(() => {
+    console.log("color", color);
+  });
+
   return (
     <div className="flex flex-col gap-4">
-      <div>
-        <p
-          className={`font-bold text-md duration-200 ${
-            color === undefined ? "" : "text-green-500"
-          }`}
-        >
-          {color === undefined ? "SELECT COLOR" : "COLOR SELECTED"}
-        </p>
-        <p className="text-[10px]">select available color before save it</p>
-      </div>
+      <p
+        className={`font-bold text-md duration-200 ${
+          color === undefined ? "" : "text-green-500"
+        }`}
+      >
+        {color === undefined ? "SELECT COLOR" : "COLOR SELECTED"}
+      </p>
+      <p className="text-[10px]">select available color before save it</p>
 
       <div className="flex flex-wrap gap-4">
         {React.useMemo(() => {
@@ -34,13 +36,11 @@ const ProductColor = ({ colors, color, setColor }) => {
                     className={"absolute w-12 h-12 opacity-0"}
                     name={color + "color"}
                     checked={col[color?.id] ? col[color?.id] : false}
-                    onChange={() =>
-                      sSelect({
-                        name: col?.name,
-                        color: col?.color_hash,
-                        id: i,
-                      })
-                    }
+                    onChange={sSelect({
+                      name: col?.name,
+                      color: col?.color_hash,
+                      id: i,
+                    })}
                   />
 
                   <label htmlFor={i + "color"}>

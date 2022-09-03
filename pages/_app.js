@@ -4,6 +4,7 @@ import store from "lib/context";
 import { orderPrice } from "rdx/bagStorage";
 function MyApp({ Component, pageProps }) {
   store.dispatch(orderPrice());
+  //LAYOUT
   const Layout = Component.layout || (({ children }) => <>{children}</>);
 
   return (

@@ -11,7 +11,7 @@ import ProductDes from "components/Product/ProductDes";
 import ProductSize from "components/Product/ProductSize";
 import ProductColor from "components/Product/ProductColor";
 import ProductGalery from "components/Product/ProductGalery";
-import ProductVideo from "components/Modal/ProductVideo";
+import ProductVideo from "components/Dialog/ProductVideo";
 
 import AddBag from "components/Product/AddBag";
 

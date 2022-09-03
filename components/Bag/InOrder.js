@@ -1,19 +1,33 @@
 import React from "react";
+import { useRouter } from "next/router";
 import { CloseSvg } from "lib/listSvg";
 import { useDispatch, useSelector } from "react-redux";
 import { removeOrder, addQuantity, decreaseQuantity } from "rdx/bagStorage";
 import { ProductImage } from "lib/source";
 import Image from "next/future/image";
 
-const InOrder = () => {
+const InOrder = (props, ref) => {
   const { bag } = useSelector((state) => state.bag);
   const dispatch = useDispatch();
+  const router = useRouter();
+
+  const goToDetail = React.useCallback(
+    (q) => {
+      router.push({
+        pathname: `/detail`,
+        query: { id: q },
+      });
+    },
+    [router]
+  );
 
   const removeOrders = React.useCallback(
     (id) => {
-      dispatch(removeOrder({ id }));
+      if (props.rmvId === "") {
+        return Promise.all([props.refOpenDialog(id), props.setRmvId(id)]);
+      }
     },
-    [dispatch]
+    [props.rmvId]
   );
 
   const addQuant = React.useCallback(
@@ -52,13 +66,15 @@ const InOrder = () => {
                 <CloseSvg />
               </button>
             </div>
-            <div className="flex items-center gap-x-2 md:gap-x-8 w-full">
+            <div
+              onClick={() => goToDetail(ord.id)}
+              className="flex items-center gap-x-2 md:gap-x-8 w-full"
+            >
               <Image
                 alt={ord?.name}
                 src={ProductImage[ord?.id]}
                 className=" w-24 h-24 md:w-38 md:h-36 rounded-xl border-2 md:rounded-none shadow-sm md:shadow-none md:border-none"
               />
-
               <div className="w-full">
                 <p className="text-sm">{ord?.name}</p>
                 <div className="flex flex-row items-center gap-x-2 text-sm w-full">
@@ -113,6 +129,12 @@ const InOrder = () => {
     MapBag();
   }, [bag, dispatch, MapBag()]);
 
+  React.useImperativeHandle(ref, () => {
+    return {
+      acceptRemove: (id) => removeOrders(id),
+    };
+  });
+
   return (
     <>
       <div className="justify-around w-full mb-12 md:flex hidden">
@@ -132,4 +154,4 @@ const InOrder = () => {
   );
 };
 
-export default InOrder;
+export default React.forwardRef(InOrder);

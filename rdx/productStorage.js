@@ -11,13 +11,9 @@ export const stores = createSlice({
     initStorate: (state, action) => {
       state.stores.push(...action.payload);
     },
-    listItem: (state, action) => {
-      const list = { ...state.stores };
-      state.stores = list;
-    },
   },
 });
 
-export const { initStorate, listItem } = stores.actions;
+export const { initStorate } = stores.actions;
 
 export default stores.reducer;

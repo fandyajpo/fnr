@@ -2,42 +2,39 @@ import React from "react";
 import FreeShipping from "components/FreeShipping";
 import { Arrow } from "lib/listSvg";
 import { useDispatch } from "react-redux";
-import { addBag } from "rdx/bagStorage";
+import { addBag, mapCheck } from "rdx/bagStorage";
 import { useRouter } from "next/router";
 
 const AddBag = ({ price, name, color, size, id, setSize, setColor }) => {
   const router = useRouter();
   const dispatch = useDispatch();
+
   const storeBag = React.useCallback(
     (data) => {
-      if (data.color === undefined) return;
-      if (data.size === undefined) return;
-      return dispatch(addBag(data));
+      if (!data.color) return;
+      if (!data.size) return;
+      Promise.all([
+        dispatch(addBag(data)),
+        router.push("/bag"),
+        setSize(),
+        setColor,
+      ]);
     },
     [color, size]
   );
-
-  const goToCart = React.useCallback(() => {
-    router.push("/bag");
-  }, [router]);
 
   return (
     <div className="bg-grays w-full h-20 md:relative flex items-center justify-between p-2 md:p-4">
       <FreeShipping />
       <button
         onClick={() =>
-          Promise.all([
-            storeBag({
-              price: price,
-              name: name,
-              color: color,
-              size: size,
-              id: id,
-            }),
-            setSize(),
-            setColor(),
-            goToCart(),
-          ])
+          storeBag({
+            price: price,
+            name: name,
+            color: color,
+            size: size,
+            id: id,
+          })
         }
         className={`${
           color === undefined || size === undefined ? "bg-gray-800" : "bg-black"

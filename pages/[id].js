@@ -7,13 +7,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { initStorate } from "rdx/productStorage";
 import { Loading } from "lib/listSvg";
 
-// export async function getServerSideProps({ res, req }) {
+// export async function getStaticProps() {
 //   const Fetcher = await fetch(
 //     "https://my-json-server.typicode.com/megasuartika/fe-assignment/db"
 //   );
-
 //   const result = await Fetcher.json();
-//   const product = result.shoes;
+//   const product = result.shoes.map((pd, id) => Object.assign(pd, { id: id }));
 //   return {
 //     props: {
 //       product,
@@ -21,7 +20,7 @@ import { Loading } from "lib/listSvg";
 //   };
 // }
 
-const Home = () => {
+const Home = ({ product }) => {
   const dispatch = useDispatch();
   const { stores } = useSelector((state) => state.stores);
   const [isFetch, setIsFetch] = React.useState(false);
@@ -60,10 +59,10 @@ const Home = () => {
   }, []);
 
   return (
-    <div>
+    <>
       <Category>{Cat()}</Category>
-      {isFetch ? <Loading /> : <Product />}
-    </div>
+      {isFetch ? <Loading /> : <Product product={product} />}
+    </>
   );
 };
 
